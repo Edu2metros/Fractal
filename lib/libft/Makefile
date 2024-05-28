@@ -60,14 +60,14 @@ $(NAME): $(OBJ)
 bonus: $(BONUS_OBJ)
 
 %.o: %.c libft.h
-	$(CC) $(CFLAGS) -c $< -o $@ 
-	ar rc $(NAME) $@
+	@$(CC) $(CFLAGS) -c $< -o $@ 
+	@ar rc $(NAME) $@
 
 clean: 
-	rm -f $(OBJ) $(BONUS_OBJ)
+	@rm -f $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

@@ -1,56 +1,67 @@
-NAME := fractol
-NAME_BONUS := fractol_bonus
 
-MLX_FLAGS := -ldl -lglfw -pthread -lm
-CC := cc -Wall -Werror -Wextra -Wunreachable-code -Ofast
-LIBFT := ./lib/libft/libft.a
-LIBMLX := ./lib/MLX42/build/libmlx42.a
-BINDIR := ./bin
-MANDATORY := ./src/mandatory
-BONUS := ./src/bonus
+FLAGS = -g3 -Wall -Wextra -Werror
+MLX_FLAGS = -ldl -lglfw -pthread -lm
+INCLUDES = -I ./lib/
+OBJ_DIR = obj/
+OBJ_DIR_BONUS = obj_bonus/
+SRC = src/mandatory/
+SRC_BONUS = src/bonus/
+NAME = fractal
+NAME_BONUS = fractal_bonus
+LIBFT_PATH = lib/libft/libft.a 
+MLX_PATH = lib/MLX42/build/libmlx42.a
 
-HEADERS := -I ./include -I ./lib/MLX42/include -I ./lib/libft
-LIBS := $(LIBMLX) $(LIBFT) $(MLX_FLAGS)
+src += main.c colors.c hook.c math.c message.c mouse.c utils.c
 
-MANDATORY_SRCS := colors.c hook.c main.c math.c utils.c mouse.c message.c
-BONUS_SRCS := colors_bonus.c hook_bonus.c main_bonus.c math_bonus.c utils_bonus.c mouse_bonus.c message_bonus.c
+src_bonus += main_bonus.c colors_bonus.c hook_bonus.c math_bonus.c message_bonus.c mouse_bonus.c utils_bonus.c
 
-MANDATORY_OBJS := $(patsubst %.c, $(BINDIR)/mandatory/%.o, $(MANDATORY_SRCS))
-BONUS_OBJS := $(patsubst %.c, $(BINDIR)/bonus/%.o, $(BONUS_SRCS))
+SRC_OBJ = $(addprefix $(OBJ_DIR), $(src:.c=.o))
 
-all: libs $(BINDIR) $(BINDIR)/mandatory $(NAME)
-bonus: libs $(BINDIR) $(BINDIR)/bonus $(NAME_BONUS)
+SRC_OBJ_BONUS = $(addprefix $(OBJ_DIR_BONUS), $(src_bonus:.c=.o))
 
-$(LIBMLX):
-	cd lib/MLX42/ && cmake -B build -DDEBUG=1
-	cd lib/MLX42/ && cmake --build build -j4
+all: libft build_mlx $(NAME)
 
-$(LIBFT):
-	@make -C lib/libft/
+bonus: libft build_mlx $(NAME_BONUS)
 
-libs: $(LIBFT) $(LIBMLX)
+$(OBJ_DIR)%.o: $(SRC)%.c
+	@mkdir -p $(OBJ_DIR)
+	@cc $(FLAGS) $(INCLUDES) -c $< -o $@
 
-$(BINDIR) $(BINDIR)/mandatory $(BINDIR)/bonus:
-	@mkdir -p $@
+$(OBJ_DIR_BONUS)%.o: $(SRC_BONUS)%.c
+	@mkdir -p $(OBJ_DIR_BONUS)
+	@cc $(FLAGS) $(INCLUDES) -c $< -o $@
 
-$(BINDIR)/mandatory/%.o: $(MANDATORY)/%.c
-	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<
+$(NAME): $(SRC_OBJ)
+	@cc $(FLAGS) $(INCLUDES) $(SRC_OBJ) $(LIBFT_PATH) $(MLX_PATH) $(MLX_FLAGS) -o $(NAME)
 
-$(BINDIR)/bonus/%.o: $(BONUS)/%.c
-	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<
+$(NAME_BONUS): $(SRC_OBJ_BONUS)
+	@cc $(FLAGS) $(INCLUDES) $(SRC_OBJ_BONUS) $(LIBFT_PATH) $(MLX_PATH) $(MLX_FLAGS) -o $(NAME_BONUS)
 
-$(NAME): $(MANDATORY_OBJS)
-	@$(CC) $(MANDATORY_OBJS) $(LIBS) -o $(NAME)
+build_mlx:
+ifeq (,$(wildcard $(MLX_PATH)))
+	@cd lib && \
+	git clone https://github.com/codam-coding-college/MLX42.git && \
+	cd MLX42 && \
+	sed -i 's/cmake_minimum_required (VERSION 3.18.0)/cmake_minimum_required (VERSION 3.16.0)/g' CMakeLists.txt && \
+	if ! cmake -B build; then \
+		echo "Failed to configure MLX42"; \
+	else \
+		cmake --build build -j4; \
+	fi
+endif
 
-$(NAME_BONUS): $(BONUS_OBJS)
-	@$(CC) $(BONUS_OBJS) $(LIBS) -o $(NAME_BONUS)
+libft:
+	@make -C lib/libft
 
 clean:
-	@rm -rf $(BINDIR)
+	@rm -rf $(OBJ_DIR) $(OBJ_DIR_BONUS)
+	@make -C lib/libft clean
 
 fclean: clean
 	@rm -f $(NAME) $(NAME_BONUS)
+	@make -C lib/libft fclean
+	@rm -rf lib/MLX42
 
 re: fclean all
 
-.PHONY: all clean fclean re libs bonus
+.PHONY: all clean fclean re libft build_mlx

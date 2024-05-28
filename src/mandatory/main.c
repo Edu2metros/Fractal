@@ -6,7 +6,7 @@
 /*   By: eddos-sa <eddos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:04:26 by eddos-sa          #+#    #+#             */
-/*   Updated: 2023/11/13 12:36:29 by eddos-sa         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:21:15 by eddos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,4 @@ int32_t	main(int argc, char *argv[])
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
+
