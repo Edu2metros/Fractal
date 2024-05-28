@@ -6,7 +6,7 @@
 /*   By: eddos-sa <eddos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:51:17 by eddos-sa          #+#    #+#             */
-/*   Updated: 2023/11/08 19:51:52 by eddos-sa         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:11:50 by eddos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_scroll(double xdelta, double ydelta, void *param)
 	double		zoom_factor;
 
 	f = param;
-	xdelta = 0;
+	(void)xdelta;
 	zoom_factor = 1.1;
 	mlx_get_mouse_pos(f->mlx, &f->xpos, &f->ypos);
 	f->zoom_x = f->min_x + f->xpos * ((f->max_x - f->min_x) / WIDTH);

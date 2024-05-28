@@ -6,7 +6,7 @@
 /*   By: eddos-sa <eddos-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:04:26 by eddos-sa          #+#    #+#             */
-/*   Updated: 2023/11/10 15:17:32 by eddos-sa         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:13:46 by eddos-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	paint(t_fractal *set)
 {
+	if(set->paint)
+	{
+		mlx_delete_image(set->mlx, set->paint);
+		set->paint = mlx_new_image(set->mlx, WIDTH, HEIGHT);
+	}
 	set->x = 0;
 	set->y = 0;
 	while (set->x < WIDTH)
