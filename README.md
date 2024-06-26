@@ -4,7 +4,7 @@
 
 <p align="center"><a href="https://www.42sp.org.br/" target="_blank"><img src="https://img.shields.io/static/v1?label=&message=SP&color=000&style=for-the-badge&logo=42""></a></p>
 <p align="center"><img src="https://github.com/ayogun/42-project-badges/raw/main/badges/fract-olm.png"> </p>
- <p align="center">Nota: <strong>122/100</strong> ✔️ </p>
+ <p align="center">Nota: <strong>125/100</strong> ✔️ </p>
 
 <h2 align="center"><strong>What is the Fract-ol?</strong></h2>
 
